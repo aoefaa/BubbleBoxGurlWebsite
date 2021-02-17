@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+{% block content %}			
+<!-- //navigation -->
+<!-- breadcrumbs -->
+	<div class="breadcrumbs">
+		<div class="container">
+			<ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
+				<li><a href="{{url_for('index')}}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+				<li class="active">About</li>
+			</ol>
+		</div>
+	</div>
+<!-- //breadcrumbs -->
+<!-- about -->
+	<div class="about">
+		<div class="container">
+			<h3 class="w3_agile_header">Tentang Kami</h3>
+			<div class="about-agileinfo w3layouts">
+				<div class="col-md-8 about-wthree-grids grid-top">
+					<h4>Tokopekita adalah salah satu proyek toko online berbasis Web</h4>
+					<p class="top">Template : MarketPlace W3Layouts
+					<br>
+					Fitur E-Commerce pada web ini dikembangkan oleh Richard's Lab</p>	
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+	<!-- //about -->
+{% endblock content %}

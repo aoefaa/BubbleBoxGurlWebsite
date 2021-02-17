@@ -1,0 +1,114 @@
+{% extends 'layout.html' %}
+{% block content %}	
+<!-- breadcrumbs -->
+	<div class="breadcrumbs">
+		<div class="container">
+			<ol class="breadcrumb breadcrumb1">
+				<li><a href="{{url_for('index')}}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+				<li class="active">Checkout</li>
+			</ol>
+		</div>
+	</div>
+<!-- //breadcrumbs -->
+<!-- checkout -->
+	<div class="checkout">
+		<div class="container">
+			<h2>Kamu memiliki <span><?php echo $itungtrans3 ?> transaksi</span></h2>
+			<div class="checkout-right">
+				<table class="timetable_sub">
+					<thead>
+						<tr>
+							<th>No.</th>	
+							<th>Kode Order</th>
+							<th>Tanggal Order</th>
+							<th>Total</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					
+					<?php 
+					
+						$brg=mysqli_query($conn,"SELECT DISTINCT(idcart), c.orderid, tglorder, status from cart c, detailorder d where c.userid='$uid' and d.orderid=c.orderid and status!='Cart' order by tglorder DESC");
+						$no=1;
+						while($b=mysqli_fetch_array($brg)){
+
+					?>
+					<tr class="rem1"><form method="post">
+						<td class="invert"><?php echo $no++ ?></td>
+						<td class="invert"><a href="order.php?id=<?php echo $b['orderid'] ?>"><?php echo $b['orderid'] ?></a></td>
+						
+						<td class="invert"><?php echo $b['tglorder'] ?></td>
+						<td class="invert">
+						
+						Rp<?php 				$ongkir = 10000;
+												$ordid = $b['orderid'];
+												$result1 = mysqli_query($conn,"SELECT SUM(qty*hargaafter)+$ongkir AS count FROM detailorder d, produk p where d.orderid='$ordid' and p.idproduk=d.idproduk order by d.idproduk ASC");
+												$cekrow = mysqli_num_rows($result1);
+												$row1 = mysqli_fetch_assoc($result1);
+												$count = $row1['count'];
+												if($cekrow > 0){
+													echo number_format($count);
+													} else {
+														echo 'No data';
+													}?>
+						
+						</td>
+				
+						<td class="invert">
+							<div class="rem">
+								<?php
+								if($b['status']=='Payment'){
+								echo '
+								<a href="konfirmasi.php?id='.$b['orderid'].'" class="form-control btn-primary">
+								Konfirmasi Pembayaran
+								</a>
+								';}
+								else if($b['status']=='Diproses'){
+								echo 'Pesanan Diproses (Pembayaran Diterima)';
+								}
+								else if($b['status']=='Dikirim'){
+									echo 'Pesanan Dikirim';
+								} else if($b['status']=='Selesai'){
+									echo 'Pesanan Selesai';
+								} else if($b['status']=='Dibatalkan'){
+									echo 'Pesanan Dibatalkan';
+								} else {
+									echo 'Konfirmasi diterima';
+								}
+								
+								?>
+							</form>
+							</div>
+							<script>$(document).ready(function(c) {
+								$('.close1').on('click', function(c){
+									$('.rem1').fadeOut('slow', function(c){
+										$('.rem1').remove();
+									});
+									});	  
+								});
+						   </script>
+						</td>
+					</tr>
+					<?php
+						}
+					?>
+					
+								<!--quantity-->
+									<script>
+									$('.value-plus').on('click', function(){
+										var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10)+1;
+										divUpd.text(newVal);
+									});
+
+									$('.value-minus').on('click', function(){
+										var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10)-1;
+										if(newVal>=1) divUpd.text(newVal);
+									});
+									</script>
+								<!--quantity-->
+				</table>
+			</div>
+		</div>
+	</div>
+<!-- //checkout -->
+{% endblock content %}
