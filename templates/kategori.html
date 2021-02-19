@@ -5,7 +5,9 @@
 		<div class="container">
 			<ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
 				<li><a href="{{url_for('index')}}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
-				<li class="active">Kategori</li>
+				{% for kategori in category %}
+				<li class="active">{{ kategori.namakategori }}</li>
+				{% endfor %}
 			</ol>
 		</div>
 	</div>
@@ -17,51 +19,32 @@
 				<div class="categories">
 					<h2>Categories</h2>
 					<ul class="cate">
-						
-						
-						<?php 
-														$kat=mysqli_query($conn,"SELECT * from kategori order by idkategori ASC");
-														while($p=mysqli_fetch_array($kat)){
-
-															?>
-														<li><a href="{{url_for('kategori')}}"><i class="fa fa-arrow-right" aria-hidden="true"></i><?php echo $p['namakategori'] ?></a></li>
-																				
-														<?php
-																	}
-														?>
-							
+						{% for category in categories %}
+						<li><a href="?idkategori={{ category.idkategori }}"><i class="fa fa-arrow-right" aria-hidden="true"></i>{{ category.namakategori }}</a></li>													
+						{% endfor %}	
 					</ul>
 				</div>																																												
 			</div>
 			<div class="col-md-8 products-right">
 				<div class="agile_top_brands_grids">
-				
-				
-				<?php 
-					$brgs=mysqli_query($conn,"SELECT * from produk where idkategori='$idk' order by idproduk ASC");
-					$x = mysqli_num_rows($brgs);
-					
-					if($x>0){
-					while($p=mysqli_fetch_array($brgs)){
-					?>
-						
+					{% for produk in product_by_category %}
 						<div class="col-md-4 top_brand_left">
 						<div class="hover14 column">
 							<div class="agile_top_brand_left_grid">
 								<div class="agile_top_brand_left_grid_pos">
-									<img src="images/offer.png" alt=" " class="img-responsive" />
+									<img src="{{url_for('static', filename='images/offer.png')}}" alt=" " class="img-responsive" />
 								</div>
 								<div class="agile_top_brand_left_grid1">
 									<figure>
 										<div class="snipcart-item block">
 											<div class="snipcart-thumb">
-												<a href="{{url_for('produk')}}"><img src="<?php echo $p['gambar']?>" width="200px" height="200px"></a>		
-												<p><?php echo $p['namaproduk'] ?></p>
-												<h4>Rp<?php echo number_format($p['hargaafter']) ?> <span>Rp<?php echo number_format($p['hargabefore']) ?></span></h4>
+												<a href=""><img src="{{url_for('static', filename=produk.gambar)}}" width="200px" height="200px"></a>		
+												<p>{{ produk.namaproduk }}</p>
+												<h4>Rp {{ produk.hargaafter }}<span>Rp {{ produk.hargabefore }}</span></h4>
 											</div>
 											<div class="snipcart-details top_brand_home_details">
 												<fieldset>
-													<a href="{{url_for('produk')}}"><input type="submit" class="button" value="Lihat Produk" /></a>
+													<a href="?idproduk={{ produk.idproduk }}"><input type="submit" class="button" value="Lihat Produk" /></a>
 												</fieldset>
 											</div>
 										</div>
@@ -70,12 +53,7 @@
 							</div>
 						</div>
 					</div>
-						<?php
-							}
-					} else {
-						echo "Data tidak ditemukan";
-					}
-						?>
+					{% endfor %}
 					
 						<div class="clearfix"> </div>
 				</div>

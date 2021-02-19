@@ -1,7 +1,23 @@
 {% extends 'layout.html' %}
+{% block category %}
+<li class="dropdown">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Kategori<b class="caret"></b></a>
+	<ul class="dropdown-menu multi-column columns-3">
+		<div class="row">
+			<div class="multi-gd-img">
+				<ul class="multi-column-dropdown">
+					<h6>Kategori</h6>
+					{% for category in categories %}
+					<li><a href="?idkategori={{ category.idkategori }}">{{ category.namakategori }}</a></li>
+					{% endfor %}
+				</ul>
+			</div>	
+		</div>
+	</ul>
+</li>
+{% endblock %}
 {% block content %}		
-<!-- //navigation -->
-	<!-- main-slider -->
+	<!-- main-slider --> 
 	<ul id="demo1">
 		<li>
 			<img src="{{url_for('static', filename='images/slide1.jpg')}}" alt="" />
@@ -36,41 +52,43 @@
 								</h5>
 								</div>
 							<div class="agile_top_brands_grids">
-								<div class="col-md-4 top_brand_left">
-									<div class="hover14 column">
-										<div class="agile_top_brand_left_grid">
-											<div class="agile_top_brand_left_grid_pos">
-												<img src="{{url_for('static', filename='images/offer.png')}}" alt=" " class="img-responsive" />
-											</div>
-											<div class="agile_top_brand_left_grid1">
-												<figure>
-													<div class="snipcart-item block" >
-														<div class="snipcart-thumb">
-															<a href="{{url_for('produk')}}"><img title=" " alt=" " src="" width="200px" height="200px" /></a>		
-															<p><?php echo $p['namaproduk'] ?></p>
-															<div class="stars">
-															<?php
-															$bintang = '<i class="fa fa-star blue-star" aria-hidden="true"></i>';
-															$rate = $p['rate'];
-															
-															for($n=1;$n<=$rate;$n++){
-																echo '<i class="fa fa-star blue-star" aria-hidden="true"></i>';
-															};
-															?>
+								{% for product in products %}
+									<div class="col-md-4 top_brand_left">
+										<div class="hover14 column">
+											<div class="agile_top_brand_left_grid">
+												<div class="agile_top_brand_left_grid_pos">
+													<img src="{{url_for('static', filename='images/offer.png')}}" alt=" " class="img-responsive" />
+												</div>
+												<div class="agile_top_brand_left_grid1">
+													<figure>
+														<div class="snipcart-item block" >
+															<div class="snipcart-thumb">
+																<a href="?idproduk={{ product.idproduk }}"><img title=" " alt=" " src="{{url_for('static', filename=product.gambar)}}" width="200px" height="200px" /></a>		
+																<p>{{ product.namaproduk }}</p>
+																<div class="stars">
+																<?php
+																$bintang = '<i class="fa fa-star blue-star" aria-hidden="true"></i>';
+																$rate = $p['rate'];
+																
+																for($n=1;$n<=$rate;$n++){
+																	echo '<i class="fa fa-star blue-star" aria-hidden="true"></i>';
+																};
+																?>
+																</div>
+																<h4>Rp {{product.hargaafter}}<span>Rp {{product.hargabefore}}</span></h4>
 															</div>
-															<h4>Rp<?php echo number_format($p['hargaafter']) ?> <span>Rp<?php echo number_format($p['hargabefore']) ?></span></h4>
+															<div class="snipcart-details top_brand_home_details">
+																	<fieldset>
+																		<a href="?idproduk={{ product.idproduk }}"><input type="submit" class="button" value="Lihat Produk" /></a>
+																	</fieldset>
+															</div>
 														</div>
-														<div class="snipcart-details top_brand_home_details">
-																<fieldset>
-																	<a href="{{url_for('produk')}}"><input type="submit" class="button" value="Lihat Produk" /></a>
-																</fieldset>
-														</div>
-													</div>
-												</figure>
+													</figure>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
+								{% endfor %}
 								<div class="clearfix"> </div>
 							</div>
 						</div>					

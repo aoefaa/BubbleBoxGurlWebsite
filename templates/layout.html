@@ -67,11 +67,11 @@
 				</ul>
 			</div>
 			<div class="w3ls_logo_products_left">
-				<h1><a href="{{url_for('index')}}">Bubble Box Gurl</a></h1>
+				<h1><a href="">Bubble Box Gurl</a></h1>
 			</div>
 		<div class="w3l_search">
 			<form action="{{url_for('cari')}}" method="post">
-				<input type="search" name="Search" placeholder="Cari produk...">
+				<input type="search" name="cari" placeholder="Cari produk...">
 				<button type="submit" class="btn btn-default search" aria-label="Left Align">
 					<i class="fa fa-search" aria-hidden="true"> </i>
 				</button>
@@ -99,19 +99,7 @@
 					<ul class="nav navbar-nav">
 						<li class="active"><a href="{{url_for('index')}}" class="act">Home</a></li>	
 						<!-- Mega Menu -->
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Kategori Produk<b class="caret"></b></a>
-							<ul class="dropdown-menu multi-column columns-3">
-								<div class="row">
-									<div class="multi-gd-img">
-										<ul class="multi-column-dropdown">
-											<h6>Kategori</h6>
-											<li><a href="{{url_for('kategori')}}"></a></li>
-										</ul>
-									</div>	
-								</div>
-							</ul>
-						</li>
+						{% block category %}{% endblock %}
 						<li><a href="{{url_for('keranjang')}}">Keranjang Saya</a></li>
 						<li><a href="{{url_for('daftarOrder')}}">Daftar Order</a></li>
 					</ul>

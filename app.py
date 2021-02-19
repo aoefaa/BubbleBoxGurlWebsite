@@ -1,21 +1,37 @@
-from flask import Flask, render_template
-from flask_mysqldb import MySQL
-
-app = Flask(__name__)
-
-#------------------------------MySQL------------------------------
-
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'bubbleboxgurl'
-mysql = MySQL(app)
-
-#------------------------------Routing------------------------------
+from flask import Flask, render_template, request
+from config import app
+from produk import *
+from kategori import *
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    products = getProducts()
+    if 'idproduk' in request.args:
+        id_produk = request.args['idproduk']
+        product = getProductById(id_produk)
+        return render_template('produk.html',
+                                product = product
+                                )
+    categories = getCategories()
+    if 'idkategori' in request.args:
+        id_kategori = request.args['idkategori']
+        category = getCategory(id_kategori)
+        product_by_category = getProductByCategory(id_kategori)
+        if 'idproduk' in request.args:
+            id_produk = request.args['idproduk']
+            product = getProductById(id_produk)
+            return render_template('produk.html',
+                                    product = product
+                                    )
+        return render_template('kategori.html',
+                                category = category,
+                                categories = categories,
+                                product_by_category = product_by_category
+                                )
+    return render_template('index.html',
+                            categories = categories,
+                            products = products
+                            )
 
 @app.route('/daftar')
 def daftar():
@@ -25,9 +41,9 @@ def daftar():
 def login():
     return render_template('login.html')
 
-@app.route('/kategori')
-def kategori():
-    return render_template('kategori.html')
+# @app.route('/kategori')
+# def kategori():
+#     return render_template('kategori.html')
 
 @app.route('/keranjang')
 def keranjang():
@@ -41,17 +57,23 @@ def daftarOrder():
 def checkout():
     return render_template('checkout.html')
 
-@app.route('/produk')
-def produk():
-    return render_template('produk.html')
+# @app.route('/produk')
+# def produk():
+#     return render_template('produk.html')
 
 @app.route('/about')
 def about():
     return render_template('about.html')
 
-@app.route('/cari')
+@app.route('/cari', methods=['GET', 'POST'])
 def cari():
-    return render_template('cari.html')
+    if request.method == 'POST':
+        produk = request.form['cari']
+        data = searchProduct(produk)
+        print produk
+    return render_template('cari.html',
+                            data = data
+                            )
 
 #------------------------------Admin Routing------------------------------
 
@@ -86,6 +108,8 @@ def adminCustomer():
 @app.route('/admin/user')
 def adminUser():
     return render_template('adminUser.html')
+
+#------------------------------Main------------------------------
 
 if __name__ == "__main__":
     app.run(debug=True)
