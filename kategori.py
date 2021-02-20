@@ -4,7 +4,7 @@ from config import app, db
 def getCategories():
     arr = []
     cur = db.connection.cursor()
-    cur.execute("SELECT * FROM kategori")
+    cur.execute("SELECT * FROM kategori order by namakategori ASC")
     data = cur.fetchall()
     count = 0
     while(count < len(data)):

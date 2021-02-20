@@ -45,8 +45,71 @@
 				</div>
 			</div>
 		</div>
-		
-		
 		<!-- row area start-->
 	</div>
+	<!-- modal input -->
+	<div id="myModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Tambah Produk</h4>
+				</div>
+				
+				<div class="modal-body">
+				<form method="post" enctype="multipart/form-data" >
+						<div class="form-group">
+							<label>Nama Produk</label>
+							<input name="namaproduk" type="text" class="form-control"  autofocus>
+						</div>
+						<div class="form-group">
+							<label>Nama Kategori</label>
+							<select name="idkategori" class="form-control">
+							<option selected>Pilih Kategori</option>
+							{% for category in categories %}
+								<option value="{{ category.idkategori }}">{{ category.namakategori }}</option>
+							{% endfor %}	
+							</select>
+							
+						</div>
+						<div class="form-group">
+							<label>Deskripsi</label>
+							<input name="deskripsi" type="text" class="form-control">
+						</div>
+						<div class="form-group">
+							<label>Rating (1-5)</label>
+							<input name="rate" type="number" class="form-control"  min="1" max="5" >
+						</div>
+						<div class="form-group">
+							<label>Harga Sebelum Diskon</label>
+							<input name="hargabefore" type="number" class="form-control">
+						</div>
+						<div class="form-group">
+							<label>Harga Setelah Diskon</label>
+							<input name="hargaafter" type="number" class="form-control">
+						</div>
+						<div class="form-group">
+							<label>Gambar</label>
+							<input name="uploadgambar" type="file" class="form-control"required>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+						<input name="addproduct" type="submit" class="btn btn-primary" value="Tambah">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+<script>
+$(document).ready(function() {
+$('#dataTable3').DataTable( {
+dom: 'Bfrtip',
+buttons: [
+	'print'
+]
+} );
+} );
+</script>
 {% endblock content %}

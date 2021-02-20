@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, flash
 from config import app
 from produk import *
 from kategori import *
@@ -6,6 +6,8 @@ from verifikasi import *
 from pembayaran import *
 from user import *
 from order import *
+import os
+from werkzeug.utils import secure_filename
 
 @app.route('/', methods = ['GET','POST'])
 def index():
@@ -200,11 +202,36 @@ def adminKategori():
                             acs = ac
                             )
 
-@app.route('/admin/produk')
+UPLOAD_FOLDER = 'produk/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+ALLOWED_EXTENTIONS = set(['png', 'jpg', 'jpeg'])
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENTIONS
+
+@app.route('/admin/produk', methods=['GET', 'POST'])
 def adminProduk():
     products = getProductByIdCategory()
+    categories = getCategories()
+    if request.method == 'POST':
+        # idkategori = request.form['idkategori']
+        # namaproduk = request.form['namaproduk']
+        # deskripsi = request.form['deskripsi']
+        # rate = request.form['rate']
+        # hargabefore = request.form['hargabefore']
+        # hargaafter = request.form['hargaafter']
+        # tgldibuat = request.form['namaproduk']
+        gambar = request.files['uploadgambar']
+        for file in gambar:
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                print filename
+                # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                # addProduct(filename)
+        # print gambar
     return render_template('adminProduk.html',
-                            products = products)
+                            products = products,
+                            categories = categories)
 
 @app.route('/admin/pembayaran')
 def adminPembayaran():

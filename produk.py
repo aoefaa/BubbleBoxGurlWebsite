@@ -164,3 +164,10 @@ def getProductByIdCategory():
                     'hargaafter':obj[10]})
         count += 1
     return arr
+# def addProduct(idkategori, namaproduk, gambar, deskripsi, rate, hargabefore, hargaafter, tgldibuat):
+
+def addProduct(gambar):
+    cur = db.connection.cursor()
+    cur.execute("INSERT INTO produk (gambar) VALUES ('{0}')".format(gambar))
+    # cur.execute("INSERT INTO produk (idkategori, namaproduk, gambar, deskripsi, rate, hargabefore, hargaafter, tgldibuat) VALUES ({0}, '{1}', '{2}', '{3}', {4}, {5}, {6}, '{7}')".format(idkategori, namaproduk, gambar, deskripsi, rate, hargabefore, hargaafter, tgldibuat))
+    db.connection.commit()
