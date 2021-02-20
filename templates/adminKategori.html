@@ -42,4 +42,38 @@
         </div>
         <!-- row area start-->
     </div>
+    <!-- modal input -->
+			<div id="myModal" class="modal fade">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Tambah Kategori</h4>
+						</div>
+						<div class="modal-body">
+							<form method="post">
+								<div class="form-group">
+									<label>Nama Kategori</label>
+									<input name="namakategori" type="text" class="form-control" required autofocus>
+								</div>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+								<input name="addcategory" type="submit" class="btn btn-primary" value="Tambah">
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	
+	<script>
+	$(document).ready(function() {
+    $('#dataTable3').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'print'
+        ]
+    } );
+	} );
+	</script>
 {% endblock content %}

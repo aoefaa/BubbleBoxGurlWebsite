@@ -1,4 +1,5 @@
 from config import app, db 
+from datetime import datetime
 
 def getCustomers():
     arr = []
@@ -51,3 +52,9 @@ def countCustomers():
         arr.append({'jumlahcust':obj[0]})
         count += 1
     return arr
+
+def addUser(namalengkap, email, password, notelp, alamat, role):
+    now = datetime.now()
+    cur = db.connection.cursor()
+    cur.execute("INSERT INTO login (namalengkap, email, password, notelp, alamat, tgljoin, role) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')".format(namalengkap, email, password, notelp, alamat, now, role))
+    db.connection.commit()

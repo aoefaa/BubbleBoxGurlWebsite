@@ -1,4 +1,5 @@
 from config import app, db 
+from datetime import datetime
 
 def countOrders():
     arr = []
@@ -75,3 +76,16 @@ def getCartByOrderId(order_id):
                     'tgldibuat':obj[12]})
         count += 1
     return arr
+
+def tambahKeranjang(idproduk, userid):
+    orderid = datetime.now()
+    now = datetime.now()
+    cur = db.connection.cursor()
+    defaultStatus = 'Cart'
+    cur.execute("INSERT INTO cart (orderid, userid, tglorder) VALUES ('{0}', {1}, '{2}', '{3}')".format(orderid, userid, now, defaultStatus))
+    db.connection.commit()
+    # isAdd = True
+    # if isAdd:
+    #     cur = db.connection.cursor()
+    #     cur.execute("INSERT INTO cart (orderid, idproduk, qty) VALUES ('{0}', {1}, {2})".format(orderid, idproduk, '1'))
+    #     db.connection.commit()

@@ -1,10 +1,12 @@
 from flask import jsonify
 from config import app, db
+from datetime import datetime
+
 
 def getCategories():
     arr = []
     cur = db.connection.cursor()
-    cur.execute("SELECT * FROM kategori order by namakategori ASC")
+    cur.execute("SELECT * from kategori order by idkategori ASC")
     data = cur.fetchall()
     count = 0
     while(count < len(data)):
@@ -48,4 +50,11 @@ def countProductByCategory(id_kategori):
         arr.append({'count':obj[0]})
         count += 1
     return arr
+
+def addCategory(namakategori):
+    cur = db.connection.cursor()
+    now = datetime.now()
+    cur.execute("INSERT INTO kategori (namakategori, tgldibuat) VALUES ('{0}', '{1}')".format(namakategori, now))
+    # cur.execute("INSERT INTO produk (idkategori, namaproduk, gambar, deskripsi, rate, hargabefore, hargaafter, tgldibuat) VALUES ({0}, '{1}', '{2}', '{3}', {4}, {5}, {6}, '{7}')".format(idkategori, namaproduk, gambar, deskripsi, rate, hargabefore, hargaafter, tgldibuat))
+    db.connection.commit()
     

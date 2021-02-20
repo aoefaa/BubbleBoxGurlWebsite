@@ -18,23 +18,6 @@ def index():
             return render_template('produk.html',
                                     product = product
                                     )
-        categories = getCategories()
-        if 'idkategori' in request.args:
-            id_kategori = request.args['idkategori']
-            category = getCategory(id_kategori)
-            product_by_category = getProductByCategory(id_kategori)
-
-            if 'idproduk' in request.args:
-                id_produk = request.args['idproduk']
-                product = getProductById(id_produk)
-                return render_template('produk.html',
-                                        product = product
-                                        )
-            return render_template('kategori.html',
-                                    category = category,
-                                    categories = categories,
-                                    product_by_category = product_by_category
-                                    )
         products = getProducts()
         return render_template('index.html',
                             categories = categories,
@@ -47,6 +30,10 @@ def index():
         if 'idproduk' in request.args:
             id_produk = request.args['idproduk']
             product = getProductById(id_produk)
+            if request.method == 'POST':
+                idproduk = request.form['idprod']
+                userid = session['id']
+                print idproduk, userid
             return render_template('produk.html',
                                     product = product
                                     )
@@ -77,6 +64,13 @@ def index():
     #                         categories = categories,
     #                         products = products
     #                         )
+
+@app.route('/produk', methods=['GET', 'POST'])
+def addCart():
+    if request.method == 'POST':
+        idproduk = request.form['idprod']
+        print idproduk
+        return redirect(url_for('keranjang'))
 
 @app.route('/daftar')
 def daftar():
@@ -202,6 +196,14 @@ def adminKategori():
                             acs = ac
                             )
 
+@app.route('/admin/kategori', methods=['GET', 'POST'])
+def addKategori():
+    if request.method == 'POST':
+        namakategori = request.form['namakategori']
+        addCategory(namakategori)
+        flash('Sukses')
+    return redirect(url_for('adminKategori'))
+
 UPLOAD_FOLDER = 'produk/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 ALLOWED_EXTENTIONS = set(['png', 'jpg', 'jpeg'])
@@ -222,11 +224,11 @@ def adminProduk():
         # hargaafter = request.form['hargaafter']
         # tgldibuat = request.form['namaproduk']
         gambar = request.files['uploadgambar']
-        for file in gambar:
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                print filename
-                # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        for i in gambar:
+            if i and allowed_file(i.filename):
+                filename = secure_filename(i.filename)
+                b = i.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                print b
                 # addProduct(filename)
         # print gambar
     return render_template('adminProduk.html',
@@ -245,11 +247,37 @@ def adminCustomer():
     return render_template('adminCustomer.html',
                             customers = customers)
 
-@app.route('/admin/user')
-def adminUser():
+@app.route('/admin/customer', methods=['GET', 'POST'])
+def addCustomer():
+    if request.method == 'POST':
+        namalengkap = request.form['namalengkap']
+        email = request.form['email']
+        passw = request.form['password']
+        notelp = request.form['notelp']
+        alamat = request.form['alamat']
+        role = 'Member'
+        addUser(namalengkap, email, passw, notelp, alamat, role)
+        flash('Sukses')
+    return redirect(url_for('adminCustomer'))
+
+@app.route('/admin/staff')
+def adminStaff():
     staffs = getStaff()
     return render_template('adminUser.html',
                             staffs = staffs)
+
+@app.route('/admin/staff', methods=['GET', 'POST'])
+def addStaff():
+    if request.method == 'POST':
+        namalengkap = request.form['namalengkap']
+        email = request.form['email']
+        passw = request.form['password']
+        notelp = request.form['notelp']
+        alamat = request.form['alamat']
+        role = 'Admin'
+        addUser(namalengkap, email, passw, notelp, alamat, role)
+        flash('Sukses')
+    return redirect(url_for('adminStaff'))
 
 #------------------------------Main------------------------------
 
