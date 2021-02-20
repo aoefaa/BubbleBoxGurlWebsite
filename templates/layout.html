@@ -42,20 +42,26 @@
 			</div>
 			<div class="agile-login">
 				<ul>
-					<!-- <li><a href="{{url_for('daftar')}}"> Daftar</a></li>
-					<li><a href="{{url_for('login')}}">Masuk</a></li> -->
-
-					<!-- <li style="color:white">Halo, '.$_SESSION["name"].'
-					<li><a href="logout.html">Keluar?</a></li> -->
-
-					<li style="color:white">Halo, '.$_SESSION["name"].'
+					{% if not session %}
+					<li><a href="{{url_for('daftar')}}"> Daftar</a></li>
+					<li><a href="{{url_for('login')}}">Masuk</a></li>
+					{% else %}
+					{% if session['role'] == 'Member' %}
+					<li style="color:white">Halo, {{ nama }}
+					<li><a href="{{url_for('logout')}}">Keluar?</a></li>
+					{% else %}
+					<li style="color:white">Halo, {{ nama }}
 					<li><a href="{{url_for('admin')}}">Admin Panel</a></li>
-					<li><a href="logout.html">Keluar?</a></li>
+					<li><a href="{{url_for('logout')}}">Keluar?</a></li>
+					{% endif %}
+					{% endif %}
 				</ul>
 			</div>
-			<div class="product_list_header">  
-					<a href="{{url_for('keranjang')}}"><button class="w3view-cart" type="submit" name="submit" value=""><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button></a>
+			{% if session['role'] == 'Member' %}
+			<div class="product_list_header">
+				<a href="{{url_for('keranjang')}}"><button class="w3view-cart" type="submit" name="submit" value=""><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button></a>
 			</div>
+			{% endif %}
 			<div class="clearfix"> </div>
 		</div>
 	</div>
@@ -67,7 +73,7 @@
 				</ul>
 			</div>
 			<div class="w3ls_logo_products_left">
-				<h1><a href="">Bubble Box Gurl</a></h1>
+				<h1><a href="{{url_for('index')}}">Bubble Box Gurl</a></h1>
 			</div>
 		<div class="w3l_search">
 			<form action="{{url_for('cari')}}" method="post">
@@ -100,8 +106,10 @@
 						<li class="active"><a href="{{url_for('index')}}" class="act">Home</a></li>	
 						<!-- Mega Menu -->
 						{% block category %}{% endblock %}
+						{% if session['role'] != 'Member' %}{% else %}
 						<li><a href="{{url_for('keranjang')}}">Keranjang Saya</a></li>
-						<li><a href="{{url_for('daftarOrder')}}">Daftar Order</a></li>
+						<li><a href="{{url_for('checkout')}}">Daftar Order</a></li>
+						{% endif %}
 					</ul>
 				</div>
 			</nav>

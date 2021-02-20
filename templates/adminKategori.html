@@ -17,39 +17,22 @@
                                         <th>Nama Kategori</th>
                                         <th>Jumlah Produk</th>
                                         <th>Tanggal Dibuat</th>
-                                    </tr></thead><tbody>
-                                    <?php 
-                                    $brgs=mysqli_query($conn,"SELECT * from kategori order by idkategori ASC");
-                                    $no=1;
-                                    while($p=mysqli_fetch_array($brgs)){
-                                        $id = $p['idkategori'];
-
-                                        ?>
-                                        
-                                        <tr>
-                                            <td><?php echo $no++ ?></td>
-                                            <td><?php echo $p['namakategori'] ?></td>
-                                            <td><?php 
-                                        
-                                                $result1 = mysqli_query($conn,"SELECT Count(idproduk) AS count FROM produk p, kategori k where p.idkategori=k.idkategori and k.idkategori='$id' order by idproduk ASC");
-                                                $cekrow = mysqli_num_rows($result1);
-                                                $row1 = mysqli_fetch_assoc($result1);
-                                                $count = $row1['count'];
-                                                if($cekrow > 0){
-                                                echo number_format($count);
-                                                } else {
-                                                    echo 'No data';
-                                                }
-                                            ?></td>
-                                            <td><?php echo $p['tgldibuat'] ?></td>
-                                            
-                                        </tr>		
-                                        
-                                        <?php 
-                                    }
-                                    
-                                    ?>
-                                </tbody>
+                                    </tr></thead>
+                                    {% for category in categories%}
+                                        {% set outer_loop = loop %}
+                                        {% for ac in acs%}
+                                            {% if outer_loop.index0 == loop.index0 %}
+                                                <tbody>
+                                                    <tr>
+                                                        <td>{{ loop.index }}</td>
+                                                        <td>{{ category.namakategori }}</td>
+                                                        <td>{{ ac.count }}</td>
+                                                        <td>{{ category.tgldibuat }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
                                 </table>
                             </div>
                             </div>

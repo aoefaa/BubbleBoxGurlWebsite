@@ -14,46 +14,26 @@
 <!--- beverages --->
 	<div class="products">
 		<div class="container">
-			<div class="col-md-4 products-left">
-				<div class="categories">
-					<h2>Categories</h2>
-					<ul class="cate">
-						
-						
-						<?php 
-														$kat=mysqli_query($conn,"SELECT * from kategori order by idkategori ASC");
-														while($p=mysqli_fetch_array($kat)){
-
-															?>
-														<li><a href="kategori.php?idkategori=<?php echo $p['idkategori'] ?>"><i class="fa fa-arrow-right" aria-hidden="true"></i><?php echo $p['namakategori'] ?></a></li>
-																				
-														<?php
-																	}
-														?>
-							
-					</ul>
-				</div>																																												
-			</div>
 			<div class="col-md-8 products-right">
 				<div class="agile_top_brands_grids">
-					{% for item in data %}
+					{% for product in products %}
 					<div class="col-md-4 top_brand_left">
 						<div class="hover14 column">
 							<div class="agile_top_brand_left_grid">
 								<div class="agile_top_brand_left_grid_pos">
-									<img src="images/offer.png" alt=" " class="img-responsive" />
+									<img src="{{url_for('static', filename='images/offer.png')}}" alt=" " class="img-responsive" />
 								</div>
 								<div class="agile_top_brand_left_grid1">
 									<figure>
 										<div class="snipcart-item block">
 											<div class="snipcart-thumb">
-												<a href="product.php?idproduk=<?php echo $p['idproduk'] ?>"><img src="<?php echo $p['gambar']?>" width="200px" height="200px"></a>		
-												<p>{{ item.namaproduk }}</p>
-												<h4>{{ item.hargaafter }}<span>{{ item.hargabefore }}</span></h4>
+												<a href="?idproduk={{ product.idproduk }}"><img src="{{url_for('static', filename=product.gambar)}}" width="200px" height="200px"></a>		
+												<p>{{ product.namaproduk }}</p>
+												<h4>{{ product.hargaafter }}<span>{{ product.hargabefore }}</span></h4>
 											</div>
 											<div class="snipcart-details top_brand_home_details">
 												<fieldset>
-													<a href="product.php?idproduk=<?php echo $p['idproduk'] ?>"><input type="submit" class="button" value="Lihat Produk" /></a>
+													<a href="?idproduk={{ product.idproduk }}"><input type="submit" class="button" value="Lihat Produk" /></a>
 												</fieldset>
 											</div>
 										</div>

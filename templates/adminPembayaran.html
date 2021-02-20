@@ -18,30 +18,19 @@
                                 <th>Nama Metode</th>
                                 <th>No.Rek</th>
                                 <th>Atas Nama</th>
-                                <th>URL Logo</th>
+                                <!-- <th>URL Logo</th> -->
                             </tr></thead><tbody>
-                                <?php 
-                                $brgs=mysqli_query($conn,"SELECT * from pembayaran order by no ASC");
-                                $no=1;
-                                while($p=mysqli_fetch_array($brgs)){
-                                    $id = $p['no'];
-                                    
-                                    ?>
-                                    
+                                {% for payment in payments %}
                                     <tr>
-                                        <td><?php echo $no++ ?></td>
-                                        <td><?php echo $p['metode'] ?></td>
-                                        <td><?php echo $p['norek'] ?></td>
-                                        <td><?php echo $p['an'] ?></td>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ payment.metode }}</td>
+                                        <td>{{ payment.norek }}</td>
+                                        <td>{{ payment.an }}</td>
                                         
-                                        <td><?php echo $p['logo'] ?></td>
+                                        <!-- <td>{{ payment.logo }}</td> -->
                                         
                                     </tr>		
-                                    
-                                    <?php 
-                                }
-                                
-                                ?>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

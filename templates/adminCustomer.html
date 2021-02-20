@@ -19,26 +19,15 @@
                                 <th>Alamat</th>
                                 <th>Email</th>
                             </tr></thead><tbody>
-                                <?php 
-                                $brgs=mysqli_query($conn,"SELECT * from login where role='Member' order by userid ASC");
-                                $no=1;
-                                while($p=mysqli_fetch_array($brgs)){
-                                    ?>
-                                    
+                                {% for customer in customers %}
                                     <tr>
-                                        <td><?php echo $no++ ?></td>
-                                        <td><?php echo $p['namalengkap'] ?></td>
-                                        <td><?php echo $p['notelp'] ?></td>
-                                        <td><?php echo $p['alamat'] ?></td>
-                                        <td><?php echo $p['email'] ?></td>
-                                        
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ customer.namalengkap }}</td>
+                                        <td>{{ customer.notelp }}</td>
+                                        <td>{{ customer.alamat }}</td>
+                                        <td>{{ customer.email }}</td>
                                     </tr>	
-                                    
-                                    <?php 
-                                }
-                                
-                                ?>
-                                
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

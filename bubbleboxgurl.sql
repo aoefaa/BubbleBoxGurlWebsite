@@ -133,8 +133,8 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`userid`, `namalengkap`, `email`, `password`, `notelp`, `alamat`, `tgljoin`, `role`, `lastlogin`) VALUES
-(1, 'Admin', 'admin', '$2y$10$GJVGd4ji3QE8ikTBzNyA0uLQhiGd6MirZeSJV1O6nUpjSVp1eaKzS', '01234567890', 'Indonesia', '2020-03-16 11:31:17', 'Admin', NULL),
-(2, 'Guest', 'guest', '$2y$10$xXEMgj5pMT9EE0QAx3QW8uEn155Je.FHH5SuIATxVheOt0Z4rhK6K', '01234567890', 'Indonesia', '2020-03-16 11:30:40', 'Member', NULL);
+(1, 'Admin', '1', '1', '01234567890', 'Indonesia', '2020-03-16 11:31:17', 'Admin', NULL),
+(2, 'Guest', '2', '2', '01234567890', 'Indonesia', '2020-03-16 11:30:40', 'Member', NULL);
 
 -- --------------------------------------------------------
 

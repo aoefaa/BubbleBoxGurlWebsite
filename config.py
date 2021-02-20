@@ -8,3 +8,5 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'bubbleboxgurl'
 db = MySQL(app)
+
+app.secret_key = 'aoefaa'

@@ -19,51 +19,16 @@
                                         <th>Total</th>
                                         <th>Status</th>
                                     </tr></thead><tbody>
-                                    <?php 
-                                    $brgs=mysqli_query($conn,"SELECT * from cart c, login l where c.userid=l.userid and status!='Cart' and status!='Selesai' order by idcart ASC");
-                                    $no=1;
-                                    while($p=mysqli_fetch_array($brgs)){
-                                    $orderids = $p['orderid'];
-                                        ?>
-                                        
+                                    {% for order in orders %}
                                         <tr>
-                                            <td><?php echo $no++ ?></td>
-                                            <td><strong><a href="{{url_for('adminOrder')}}">#<?php echo $p['orderid'] ?></a></strong></td>
-                                            <td><?php echo $p['namalengkap'] ?></td>
-                                            <td><?php echo $p['tglorder'] ?></td>
-                                            <td>Rp<?php 
-                                        
-                                        $result1 = mysqli_query($conn,"SELECT SUM(d.qty*p.hargaafter) AS count FROM detailorder d, produk p where orderid='$orderids' and p.idproduk=d.idproduk order by d.idproduk ASC");
-                                        $cekrow = mysqli_num_rows($result1);
-                                        $row1 = mysqli_fetch_assoc($result1);
-                                        $count = $row1['count'];
-                                        if($cekrow > 0){
-                                            echo number_format($count);
-                                            } else {
-                                                echo 'No data';
-                                            }?></td>
-                                            <td><?php 
-                                            
-                                            //echo $p['status'] 
-                                            $orders = $p['orderid'];
-                                            $cekkonfirmasipembayaran = mysqli_query($conn,"select * from konfirmasi where orderid='$orders'");
-                                            $cekroww = mysqli_num_rows($cekkonfirmasipembayaran);
-                                            
-                                            if($cekroww > 0){
-                                                echo 'Confirmed';
-                                            } else {
-                                                if($p['status']!='Pengiriman'){
-                                                    echo "Menunggu Konfirmasi";
-                                                } else {
-                                                    echo "Pengiriman";
-                                                };
-                                            }
-                                            
-                                            ?></td>
+                                            <td>{{ loop.index }}</td>
+                                            <td><strong><a href="?idorder={{ order.orderid }}">{{ order.orderid }}</a></strong></td>
+                                            <td>{{ order.namalengkap }}</td>
+                                            <td>{{ order.tglorder }}</td>
+                                            <td>Rp {{ order.hargaafter*order.qty }}</td>
+                                            <td>{{ order.status }}</td>
                                         </tr>		
-                                        <?php 
-                                    }
-                                    ?>
+                                    {% endfor %}
                                 </tbody>
                                 </table>
                             </div>

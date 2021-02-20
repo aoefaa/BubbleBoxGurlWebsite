@@ -19,27 +19,15 @@
                                 <th>Telepon</th>
                                 <th>Alamat</th>
                             </tr></thead><tbody>
-                                <?php 
-                                $brgs=mysqli_query($conn,"SELECT * from login where role='Admin' order by userid ASC");
-                                $no=1;
-                                while($p=mysqli_fetch_array($brgs)){
-                                    
-                                    ?>
-                                    
+                                {% for staff in staffs %}
                                     <tr>
-                                        <td><?php echo $no++ ?></td>
-                                        <td><?php echo $p['namalengkap'] ?></td>
-                                        <td><?php echo $p['email'] ?></td>
-                                        <td><?php echo $p['notelp'] ?></td>
-                                        <td><?php echo $p['alamat'] ?></td>
-                                        
-                                    </tr>		
-                                    
-                                    
-                                    <?php 
-                                }
-                                
-                                ?>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ staff.namalengkap }}</td>
+                                        <td>{{ staff.email }}</td>
+                                        <td>{{ staff.notelp }}</td>
+                                        <td>{{ staff.alamat }}</td>
+                                    </tr>	
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

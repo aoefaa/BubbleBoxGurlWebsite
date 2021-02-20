@@ -24,33 +24,19 @@
 										<th>Harga Awal</th>
 										<th>Tanggal</th>
 									</tr></thead><tbody>
-									<?php 
-									$brgs=mysqli_query($conn,"SELECT * from kategori k, produk p where k.idkategori=p.idkategori order by idproduk ASC");
-									$no=1;
-									while($p=mysqli_fetch_array($brgs)){
-
-										?>
-										
+									{% for product in products %}
 										<tr>
-											<td><?php echo $no++ ?></td>
-											<td><img src="../<?php echo $p['gambar'] ?>" width="50%"\></td>
-											<td><?php echo $p['namaproduk'] ?></td>
-											<td><?php echo $p['namakategori'] ?></td>
-											<td><?php echo $p['hargaafter'] ?></td>
-											<td><?php echo $p['deskripsi'] ?></td>
-											<td><?php echo $p['rate'] ?></td>
-											<td><?php echo $p['hargabefore'] ?></td>
-											<td><?php echo $p['tgldibuat'] ?></td>
-											
+											<td>{{ loop.index }}</td>
+											<td><img src="{{url_for('static', filename=product.gambar)}}" width="50%"\></td>
+											<td>{{ product.namaproduk }}</td>
+											<td>{{ product.namakategori }}</td>
+											<td>{{ product.hargaafter }}</td>
+											<td>{{ product.deskripsi }}</td>
+											<td>{{ product.rate }}</td>
+											<td>{{ product.hargabefore }}</td>
+											<td>{{ product.tgldibuat }}</td>
 										</tr>		
-										
-										<?php 
-									}
-									
-										
-									
-
-									?>
+									{% endfor %}
 								</tbody>
 								</table>
 							</div>

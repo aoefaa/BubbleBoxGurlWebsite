@@ -41,15 +41,11 @@
 					<div id="myTabContent" class="tab-content">
 						<div role="tabpanel" class="tab-pane fade in active" id="expeditions" aria-labelledby="expeditions-tab">
 							<div class="agile-tp">
-								<h5>Penawaran Terbaik Minggu Ini
-								<?php
-								if(!isset($_SESSION['name'])){
-									
-								} else {
-									echo 'Untukmu, '.$_SESSION['name'].'!';
-								}
-								?>
-								</h5>
+								{% if not nama %}
+								<h5>Penawaran Terbaik Minggu Ini</h5>
+								{% else %}
+								<h5>Penawaran Terbaik Minggu Ini Untukmu, {{ nama }}</h5>
+								{% endif %}
 								</div>
 							<div class="agile_top_brands_grids">
 								{% for product in products %}
