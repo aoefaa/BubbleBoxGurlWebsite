@@ -46,14 +46,15 @@
 					<li><a href="{{url_for('daftar')}}"> Daftar</a></li>
 					<li><a href="{{url_for('login')}}">Masuk</a></li>
 					{% else %}
-					{% if session['role'] == 'Member' %}
-					<li style="color:white">Halo, {{ nama }}
-					<li><a href="{{url_for('logout')}}">Keluar?</a></li>
-					{% else %}
-					<li style="color:white">Halo, {{ nama }}
-					<li><a href="{{url_for('admin')}}">Admin Panel</a></li>
-					<li><a href="{{url_for('logout')}}">Keluar?</a></li>
-					{% endif %}
+						{% if session['role'] == 'Member' %}
+						<li style="color:white">Halo, {{ session['nama'] }}
+						<li><a href="{{url_for('logout')}}">Keluar?</a></li>
+						{% else %}
+						
+						<li style="color:white">Halo, {{ session['nama'] }}
+						<li><a href="{{url_for('admin')}}">Admin Panel</a></li>
+						<li><a href="{{url_for('logout')}}">Keluar?</a></li>
+						{% endif %}
 					{% endif %}
 				</ul>
 			</div>

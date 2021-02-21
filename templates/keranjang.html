@@ -8,7 +8,7 @@
 				<ul class="multi-column-dropdown">
 					<h6>Kategori</h6>
 					{% for category in categories %}
-					<li><a href="?idkategori={{ category.idkategori }}">{{ category.namakategori }}</a></li>
+					<li><a href="/kategori?idkategori={{ category.idkategori }}">{{ category.namakategori }}</a></li>
 					{% endfor %}
 				</ul>
 			</div>	
@@ -51,7 +51,7 @@
 					{% for item in item_carts %}
 					<tr class="rem1"><form method="post">
 						<td class="invert">{{ loop.index }}</td>
-						<td class="invert"><a href="?idproduk={{ item.idproduk }}"><img src="{{url_for('static', filename=item.gambar)}}" width="100px" height="100px" /></a></td>
+						<td class="invert"><a href="/produk?idproduk={{ item.idproduk }}"><img src="{{url_for('static', filename=item.gambar)}}" width="100px" height="100px" /></a></td>
 						<td class="invert">{{ item.namaproduk }}</td>
 						<td class="invert">
 							 <div class="quantity"> 
@@ -66,7 +66,8 @@
 							<div class="rem">
 							
 								<input type="submit" name="update" class="form-control" value="Update" \>
-								<input type="hidden" name="idproduknya" value="{{ item.idproduk }}" \>
+								<input type="hidden" name="idproduk" value="{{ item.idproduk }}" \>
+								<input type="hidden" name="orderid" value="{{ item.orderid }}" \>
 								<input type="submit" name="hapus" class="form-control" value="Hapus" \>
 							</form>
 							</div>
@@ -100,10 +101,10 @@
 							<div class="checkout-left-basket">
 								<h4>Total Harga</h4>
 								<ul>
-									{% for item in item_carts %}
+									<!-- {% for item in item_carts %}
 									<li>{{ item.namaproduk }}<i> - </i> <span>Rp {{ item.hargaafter*item.qty }} </span></li>
 									<li>Total (inc. 10k Ongkir)<i> - </i> <span>Rp {{ item.hargaafter*item.qty }}</span></li>
-									{% endfor %}
+									{% endfor %} -->
 								</ul>
 							</div>
 							<div class="checkout-right-basket">

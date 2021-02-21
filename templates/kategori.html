@@ -20,14 +20,14 @@
 					<h2>Categories</h2>
 					<ul class="cate">
 						{% for category in categories %}
-						<li><a href="?idkategori={{ category.idkategori }}"><i class="fa fa-arrow-right" aria-hidden="true"></i>{{ category.namakategori }}</a></li>													
+						<li><a href="/kategori?idkategori={{ category.idkategori }}"><i class="fa fa-arrow-right" aria-hidden="true"></i>{{ category.namakategori }}</a></li>													
 						{% endfor %}	
 					</ul>
 				</div>																																												
 			</div>
 			<div class="col-md-8 products-right">
 				<div class="agile_top_brands_grids">
-					{% for produk in product_by_category %}
+					{% for produk in productbycategory %}
 						<div class="col-md-4 top_brand_left">
 						<div class="hover14 column">
 							<div class="agile_top_brand_left_grid">
@@ -38,13 +38,13 @@
 									<figure>
 										<div class="snipcart-item block">
 											<div class="snipcart-thumb">
-												<a href=""><img src="{{url_for('static', filename=produk.gambar)}}" width="200px" height="200px"></a>		
+												<a href="/produk?idproduk={{ produk.idproduk }}"><img src="{{url_for('static', filename=produk.gambar)}}" width="200px" height="200px"></a>		
 												<p>{{ produk.namaproduk }}</p>
 												<h4>Rp {{ produk.hargaafter }}<span>Rp {{ produk.hargabefore }}</span></h4>
 											</div>
 											<div class="snipcart-details top_brand_home_details">
 												<fieldset>
-													<a href="?idproduk={{ produk.idproduk }}"><input type="submit" class="button" value="Lihat Produk" /></a>
+													<a href="/produk?idproduk={{ produk.idproduk }}"><input type="submit" class="button" value="Lihat Produk" /></a>
 												</fieldset>
 											</div>
 										</div>

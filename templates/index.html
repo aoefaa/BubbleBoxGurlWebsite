@@ -8,7 +8,7 @@
 				<ul class="multi-column-dropdown">
 					<h6>Kategori</h6>
 					{% for category in categories %}
-					<li><a href="?idkategori={{ category.idkategori }}">{{ category.namakategori }}</a></li>
+					<li><a href="/kategori?idkategori={{ category.idkategori }}">{{ category.namakategori }}</a></li>
 					{% endfor %}
 				</ul>
 			</div>	
@@ -41,10 +41,10 @@
 					<div id="myTabContent" class="tab-content">
 						<div role="tabpanel" class="tab-pane fade in active" id="expeditions" aria-labelledby="expeditions-tab">
 							<div class="agile-tp">
-								{% if not nama %}
+								{% if not session %}
 								<h5>Penawaran Terbaik Minggu Ini</h5>
 								{% else %}
-								<h5>Penawaran Terbaik Minggu Ini Untukmu, {{ nama }}</h5>
+								<h5>Penawaran Terbaik Minggu Ini Untukmu, {{ session['nama'] }}</h5>
 								{% endif %}
 								</div>
 							<div class="agile_top_brands_grids">
@@ -59,7 +59,7 @@
 													<figure>
 														<div class="snipcart-item block" >
 															<div class="snipcart-thumb">
-																<a href="?idproduk={{ product.idproduk }}"><img title=" " alt=" " src="{{url_for('static', filename=product.gambar)}}" width="200px" height="200px" /></a>		
+																<a href="/produk?idproduk={{ product.idproduk }}"><img title=" " alt=" " src="{{url_for('static', filename=product.gambar)}}" width="200px" height="200px" /></a>		
 																<p>{{ product.namaproduk }}</p>
 																<div class="stars">
 																<?php
@@ -75,7 +75,7 @@
 															</div>
 															<div class="snipcart-details top_brand_home_details">
 																	<fieldset>
-																		<a href="?idproduk={{ product.idproduk }}"><input type="submit" class="button" value="Lihat Produk" /></a>
+																		<a href="/produk?idproduk={{ product.idproduk }}"><input type="submit" class="button" value="Lihat Produk" /></a>
 																	</fieldset>
 															</div>
 														</div>

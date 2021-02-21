@@ -51,7 +51,7 @@
 					{% for cart in item_carts %}
 					<tr class="rem1"><form method="post">
 						<td class="invert">{{ loop.index }}</td>
-						<td class="invert"><a href="?idproduk={{ cart.idproduk }}"><img src="{{url_for('static', filename=cart.gambar)}}" width="100px" height="100px" /></a></td>
+						<td class="invert"><a href="/produk?idproduk={{ cart.idproduk }}"><img src="{{url_for('static', filename=cart.gambar)}}" width="100px" height="100px" /></a></td>
 						<td class="invert">{{ cart.namaproduk }}</td>
 						<td class="invert">
 							 <div class="quantity"> 
@@ -66,7 +66,8 @@
 							<div class="rem">
 							
 								<input type="submit" name="update" class="form-control" value="Update" \>
-								<input type="hidden" name="idproduknya" value="{{ cart.idproduk }}" \>
+								<input type="hidden" name="idproduk" value="{{ cart.idproduk }}" \>
+								<input type="hidden" name="orderid" value="{{ cart.orderid }}" \>
 								<input type="submit" name="hapus" class="form-control" value="Hapus" \>
 							</form>
 							</div>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for, flash
+from flask import *
 from config import app
 from produk import *
 from kategori import *
@@ -9,68 +9,54 @@ from order import *
 import os
 from werkzeug.utils import secure_filename
 
-@app.route('/', methods = ['GET','POST'])
+@app.route('/')
 def index():
-    if len(session) == 0:
-        if 'idproduk' in request.args:
-            id_produk = request.args['idproduk']
-            product = getProductById(id_produk)
-            return render_template('produk.html',
-                                    product = product
-                                    )
-        products = getProducts()
-        return render_template('index.html',
-                            categories = categories,
+    loggedIn, nama, userid, role = getLoginDetails()
+    categories = getCategories()
+    products = getProducts()
+    nama = session['nama']
+    return render_template('index.html',
                             products = products,
-                            
-                            )
-    else:
-        nama = session['name']
-        products = getProducts()
-        if 'idproduk' in request.args:
-            id_produk = request.args['idproduk']
-            product = getProductById(id_produk)
-            if request.method == 'POST':
-                idproduk = request.form['idprod']
-                userid = session['id']
-                print idproduk, userid
-            return render_template('produk.html',
-                                    product = product
-                                    )
-        categories = getCategories()
-        if 'idkategori' in request.args:
-            id_kategori = request.args['idkategori']
-            category = getCategory(id_kategori)
-            product_by_category = getProductByCategory(id_kategori)
+                            categories = categories)
 
-            if 'idproduk' in request.args:
-                id_produk = request.args['idproduk']
-                product = getProductById(id_produk)
-                return render_template('produk.html',
-                                        product = product
-                                        )
-            return render_template('kategori.html',
-                                    category = category,
-                                    categories = categories,
-                                    product_by_category = product_by_category
-                                    )
-        return render_template('index.html',
-                            categories = categories,
-                            products = products,
-                            nama = nama
-                            )
-    
-    # return render_template('index.html',
-    #                         categories = categories,
-    #                         products = products
-    #                         )
+
+@app.route('/produk')
+def product():
+    idproduk = request.args['idproduk']
+    product = getProductById(idproduk)
+    return render_template('produk.html',
+                            product = product)
 
 @app.route('/produk', methods=['GET', 'POST'])
 def addCart():
+    loggedIn, nama, userid, role = getLoginDetails()
     if request.method == 'POST':
+        cekbarang = []
         idproduk = request.form['idprod']
-        print idproduk
+        carts = getCartByUserId(userid)
+        for cart in carts:
+            orderid = cart['orderid']
+            qty = cart['qty']
+            cekbarang.append(cekBarang(idproduk, orderid))
+        if cekbarang == [[]]:
+            print 'Barang belum ada'
+            tambahKeranjang(idproduk, userid)
+        else:
+            updateBarang(idproduk, orderid, qty)
+            print 'Barang ada'
+        print cekbarang
         return redirect(url_for('keranjang'))
+
+@app.route('/kategori')
+def category():
+    idkategori = request.args['idkategori']
+    category = getCategory(idkategori)
+    categories = getCategories()
+    productbycategory = getProductByCategory(idkategori)
+    return render_template('kategori.html',
+                            category = category,
+                            categories = categories,
+                            productbycategory = productbycategory)
 
 @app.route('/daftar')
 def daftar():
@@ -81,40 +67,54 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['pass']
-        arr = []
-        arr.append(getEmail(email))
-        if password == arr[0][0]['password']:
-            session['id'] = arr[0][0]['userid']
-            session['role'] = arr[0][0]['role']
-            session['notelp'] = arr[0][0]['notelp']
-            session['name'] = arr[0][0]['namalengkap']
-            session['log'] = "Logged"
+        if is_valid(email, password):
+            session['email'] = email
             return redirect(url_for('index'))
-        
+        else:
+            error = 'Invalid UserId / Password'
+            return render_template('login.html', error=error)
     return render_template('login.html')
 
 @app.route('/keranjang')
 def keranjang():
-    userid = session['id']
-    carts = getCartById(userid)
-    count_carts = countCartByOrderId(carts[0]['orderid'])
+    loggedIn, nama, userid, role = getLoginDetails()
+    count_carts = countCartByUserId(userid)
     categories = getCategories()
-    item_carts = getCartByOrderId(carts[0]['orderid'])
+    item_carts = getCartByUserId(userid)
     return render_template('keranjang.html',
-                            carts = carts,
                             count_carts = count_carts,
                             categories = categories,
                             item_carts = item_carts
                             )
 
+@app.route('/keranjang', methods=['GET', 'POST'])
+def UDkeranjang():
+    loggedIn, nama, userid, role = getLoginDetails()
+    if request.method == 'POST':
+        if 'update' in request.form:
+            qty = int(request.form['jumlah'])
+            orderid = request.form['orderid']
+            idproduk = request.form['idproduk']
+            updateJumlahBarang(idproduk, orderid, qty)
+            print 'Updated'
+            return redirect(url_for('keranjang'))
+        elif 'hapus' in request.form:
+            idproduk = request.form['idproduk']
+            orderid = request.form['orderid']
+            deleteBarang(idproduk, orderid)
+            print 'Deleted'
+            return redirect(url_for('keranjang'))
+        else:
+            pass
+        return redirect(url_for('keranjang'))
+
 @app.route('/checkout')
 def checkout():
-    nama = session['name']
-    userid = session['id']
+    loggedIn, nama, userid, role = getLoginDetails()
     carts = getCartById(userid)
     count_carts = countCartByOrderId(carts[0]['orderid'])
     categories = getCategories()
-    item_carts = getCartByOrderId(carts[0]['orderid'])
+    item_carts = getCartByUserId(userid)
     payments = getPayment()
     return render_template('checkout.html',
                             nama = nama,
@@ -124,11 +124,20 @@ def checkout():
                             payments = payments
                             )
 
+@app.route('/checkout', methods=['GET', 'POST'])
+def addCheckout():
+    loggedIn, nama, userid, role = getLoginDetails()
+    if request.method == 'POST':
+        if 'checkout' in request.form:
+            orderid = request.args['orderid']
+            updateCheckout(orderid)
+    return redirect(url_for('index'))
+
 @app.route('/about')
 def about():
     return render_template('about.html')
 
-@app.route('/logout', methods=['GET', 'POST'])
+@app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('login'))
@@ -143,12 +152,6 @@ def cari():
             return render_template('cari.html',
                                     products = products
                                     )
-    if 'idproduk' in request.args:
-                id_produk = request.args['idproduk']
-                product = getProductById(id_produk)
-                return render_template('produk.html',
-                                        product = product
-                                        )
     return render_template('cari.html',
                             products = item
                             )

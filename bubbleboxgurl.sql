@@ -55,6 +55,7 @@ CREATE TABLE `detailorder` (
   `detailid` int(11) NOT NULL,
   `orderid` varchar(100) NOT NULL,
   `idproduk` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
   `qty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -62,9 +63,9 @@ CREATE TABLE `detailorder` (
 -- Dumping data for table `detailorder`
 --
 
-INSERT INTO `detailorder` (`detailid`, `orderid`, `idproduk`, `qty`) VALUES
-(13, '15wKVT0nej25Y', 1, 100),
-(14, '15PzF03ejd8W2', 2, 1);
+INSERT INTO `detailorder` (`detailid`, `orderid`, `idproduk`, `userid`, `qty`) VALUES
+(13, '15wKVT0nej25Y', 1, 1, 100),
+(14, '15PzF03ejd8W2', 2, 2, 1);
 
 -- --------------------------------------------------------
 
